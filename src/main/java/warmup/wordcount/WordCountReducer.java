@@ -8,6 +8,10 @@ import java.io.IOException;
 
 public class WordCountReducer extends Reducer< Text, IntWritable, Text, IntWritable > {
 
+    /**
+     * Finds the sum for the number of times the word is used, and prints the word and the sum.
+     * Formatted with 50 spaces for word.
+     */
     @Override
     protected void reduce( Text key, Iterable< IntWritable > values, Context context ) throws IOException, InterruptedException {
 

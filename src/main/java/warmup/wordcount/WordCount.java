@@ -24,8 +24,8 @@ public class WordCount {
 
             job.setMapperClass( WordCountMapper.class );
             job.setReducerClass( WordCountReducer.class );
-            job.setOutputKeyClass( Text.class );
-            job.setOutputValueClass( IntWritable.class );
+            job.setOutputKeyClass( Text.class );            // Word
+            job.setOutputValueClass( IntWritable.class );   // Sum
 
             System.exit( job.waitForCompletion( true ) ? 0 : 1 );
 

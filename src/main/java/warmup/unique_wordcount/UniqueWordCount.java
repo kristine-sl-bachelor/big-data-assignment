@@ -25,9 +25,9 @@ public class UniqueWordCount {
 
             job.setMapperClass( UniqueWordCountMapper.class );
             job.setReducerClass( UniqueWordCountReducer.class );
-            job.setOutputKeyClass( Text.class );
-            job.setMapOutputValueClass( IntWritable.class );
-            job.setOutputValueClass( NullWritable.class );
+            job.setOutputKeyClass( Text.class );                // Word
+            job.setMapOutputValueClass( IntWritable.class );    // Sum for reduce
+            job.setOutputValueClass( NullWritable.class );      // No sum for print
 
             System.exit( job.waitForCompletion( true ) ? 0 : 1 );
 

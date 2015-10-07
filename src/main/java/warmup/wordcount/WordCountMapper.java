@@ -15,6 +15,10 @@ public class WordCountMapper extends Mapper< LongWritable, Text, Text, IntWritab
     private final static IntWritable ONE = new IntWritable( 1 );
     private final Text WORD = new Text();
 
+    /**
+     * Goes through data token by token, verifies that token is a word, and removes any characters that are not letters
+     * from the word.
+     */
     @Override
     protected void map( LongWritable key, Text value, Context context ) throws IOException, InterruptedException {
 
