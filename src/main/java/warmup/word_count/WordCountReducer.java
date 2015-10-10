@@ -22,7 +22,7 @@ public class WordCountReducer extends Reducer< Text, IntWritable, Text, IntWrita
             sum += value.get();
         }
 
-        Text output = new Text( String.format( "%-50s", key.toString() ) );
+        Text output = new Text( String.format( "%-30s", key.toString() ) );
 
         context.write( output, new IntWritable( sum ) );
     }

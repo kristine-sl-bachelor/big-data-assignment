@@ -1,8 +1,7 @@
 package warmup.unique_word_count_test;
 
-import models.Word;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
@@ -10,9 +9,8 @@ import java.io.IOException;
 import java.util.StringTokenizer;
 
 
-public class UniqueWordCountMapper extends Mapper< LongWritable, Text, Text, IntWritable > {
+public class UniqueWordCountMapper extends Mapper< LongWritable, Text, Text, NullWritable > {
 
-    private final static IntWritable ONE = new IntWritable( 1 );
     private final Text WORD = new Text();
 
     /**
@@ -20,6 +18,7 @@ public class UniqueWordCountMapper extends Mapper< LongWritable, Text, Text, Int
      * from the word.
      */
     @Override
+
     protected void map( LongWritable key, Text value, Context context ) throws IOException, InterruptedException {
 
         String text = value.toString();
@@ -29,10 +28,9 @@ public class UniqueWordCountMapper extends Mapper< LongWritable, Text, Text, Int
 
             WORD.set( tokenizer.nextToken() );
 
-            if ( Word.isWord( WORD.toString() ) ) {
+            if ( Integer.parseInt( tokenizer.nextToken() ) == 1 ) {
 
-                WORD.set( new Text( Word.cleanWord( WORD.toString() ) ) );
-                context.write( WORD, ONE );
+                context.write( WORD, NullWritable.get() );
             }
         }
     }
