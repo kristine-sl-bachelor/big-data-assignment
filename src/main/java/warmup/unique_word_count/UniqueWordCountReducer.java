@@ -1,16 +1,16 @@
-package warmup.wordcount;
+package warmup.unique_word_count;
 
 import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
 
-public class WordCountReducer extends Reducer< Text, IntWritable, Text, IntWritable > {
+public class UniqueWordCountReducer extends Reducer< Text, IntWritable, Text, NullWritable > {
 
     /**
-     * Finds the sum for the number of times the word is used, and prints the word and the sum.
-     * Formatted with 50 spaces for word.
+     * Finds the words that have only been used once, and prints the word, without the sum (the sum is always 1)
      */
     @Override
     protected void reduce( Text key, Iterable< IntWritable > values, Context context ) throws IOException, InterruptedException {
@@ -22,9 +22,9 @@ public class WordCountReducer extends Reducer< Text, IntWritable, Text, IntWrita
             sum += value.get();
         }
 
-        Text output = new Text( String.format( "%-50s", key.toString() ) );
+        if( sum == 1) {
 
-        context.write( output, new IntWritable( sum ) );
+            context.write( key, NullWritable.get() );
+        }
     }
 }
-

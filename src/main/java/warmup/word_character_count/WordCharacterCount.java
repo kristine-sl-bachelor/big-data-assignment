@@ -1,4 +1,4 @@
-package warmup.wordcount;
+package warmup.word_character_count;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -7,8 +7,10 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import warmup.wordcount.WordCountMapper;
+import warmup.wordcount.WordCountReducer;
 
-public class WordCount {
+public class WordCharacterCount {
 
     public static void main( String[] args ) {
 
@@ -16,7 +18,7 @@ public class WordCount {
 
             final Job job = Job.getInstance( new Configuration() );
 
-            job.setJarByClass( WordCount.class );
+            job.setJarByClass( WordCharacterCount.class );
             job.setJobName( "DBLP word counter" );
 
             FileInputFormat.addInputPath( job, new Path( args[ 0 ] ) );

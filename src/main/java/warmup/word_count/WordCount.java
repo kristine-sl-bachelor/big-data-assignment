@@ -1,15 +1,14 @@
-package warmup.unique_wordcount;
+package warmup.word_count;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
-import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-public class UniqueWordCount {
+public class WordCount {
 
     public static void main( String[] args ) {
 
@@ -17,17 +16,16 @@ public class UniqueWordCount {
 
             final Job job = Job.getInstance( new Configuration() );
 
-            job.setJarByClass( UniqueWordCount.class );
-            job.setJobName( "DBLP unique word counter" );
+            job.setJarByClass( WordCount.class );
+            job.setJobName( "DBLP word counter" );
 
             FileInputFormat.addInputPath( job, new Path( args[ 0 ] ) );
             FileOutputFormat.setOutputPath( job, new Path( args[ 1 ] ) );
 
-            job.setMapperClass( UniqueWordCountMapper.class );
-            job.setReducerClass( UniqueWordCountReducer.class );
-            job.setOutputKeyClass( Text.class );                // Word
-            job.setMapOutputValueClass( IntWritable.class );    // Sum for reduce
-            job.setOutputValueClass( NullWritable.class );      // No sum for print
+            job.setMapperClass( WordCountMapper.class );
+            job.setReducerClass( WordCountReducer.class );
+            job.setOutputKeyClass( Text.class );            // Word
+            job.setOutputValueClass( IntWritable.class );   // Sum
 
             System.exit( job.waitForCompletion( true ) ? 0 : 1 );
 

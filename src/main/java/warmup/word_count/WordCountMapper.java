@@ -1,4 +1,4 @@
-package warmup.unique_wordcount;
+package warmup.word_count;
 
 import models.Word;
 import org.apache.hadoop.io.IntWritable;
@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.StringTokenizer;
 
 
-public class UniqueWordCountMapper extends Mapper< LongWritable, Text, Text, IntWritable > {
+public class WordCountMapper extends Mapper< LongWritable, Text, Text, IntWritable > {
 
     private final static IntWritable ONE = new IntWritable( 1 );
     private final Text WORD = new Text();
