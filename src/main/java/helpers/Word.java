@@ -1,4 +1,4 @@
-package models;
+package helpers;
 
 public class Word {
 

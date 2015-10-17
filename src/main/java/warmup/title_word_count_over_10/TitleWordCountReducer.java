@@ -1,4 +1,4 @@
-package warmup.word_character_count;
+package warmup.title_word_count_over_10;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -6,7 +6,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
 
-public class WordCharacterCountReducer extends Reducer< Text, IntWritable, Text, IntWritable > {
+public class TitleWordCountReducer extends Reducer< Text, IntWritable, Text, IntWritable > {
 
     /**
      *

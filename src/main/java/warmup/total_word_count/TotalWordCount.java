@@ -1,4 +1,4 @@
-package warmup.word_count;
+package warmup.total_word_count;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
@@ -11,13 +11,13 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Tool;
 import xml.XmlInputFormat;
 
-public class WordCount extends Configured implements Tool {
+public class TotalWordCount extends Configured implements Tool {
 
     public static void main( String[] args ) {
 
         try {
 
-            System.exit( new WordCount().run( args ) );
+            System.exit( new TotalWordCount().run( args ) );
 
         } catch ( Exception e ) {
 
@@ -34,10 +34,10 @@ public class WordCount extends Configured implements Tool {
 
         final Job job = Job.getInstance( config );
 
-        job.setJarByClass( WordCount.class );
+        job.setJarByClass( TotalWordCount.class );
         job.setJobName( "DBLP word counter" );
-        job.setMapperClass( WordCountMapper.class );
-        job.setReducerClass( WordCountReducer.class );
+        job.setMapperClass( TotalWordCountMapper.class );
+        job.setReducerClass( TotalWordCountReducer.class );
         job.setInputFormatClass( XmlInputFormat.class );
 
         job.setOutputKeyClass( Text.class );            // Word
