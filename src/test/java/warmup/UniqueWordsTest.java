@@ -8,8 +8,8 @@ import org.apache.hadoop.mrunit.mapreduce.ReduceDriver;
 import org.apache.hadoop.mrunit.types.Pair;
 import org.junit.Before;
 import org.junit.Test;
-import warmup.unique_words.UniqueWordCountMapper;
-import warmup.unique_words.UniqueWordCountReducer;
+import warmup.unique_words.UniqueWordsMapper;
+import warmup.unique_words.UniqueWordsReducer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,8 +40,8 @@ public class UniqueWordsTest {
             input += i + "\n";
         }
 
-        UniqueWordCountMapper mapper = new UniqueWordCountMapper();
-        UniqueWordCountReducer reducer = new UniqueWordCountReducer();
+        UniqueWordsMapper mapper = new UniqueWordsMapper();
+        UniqueWordsReducer reducer = new UniqueWordsReducer();
 
         mapDriver = MapDriver.newMapDriver( mapper );
         reduceDriver = ReduceDriver.newReduceDriver( reducer );

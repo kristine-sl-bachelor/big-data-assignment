@@ -8,8 +8,8 @@ import org.apache.hadoop.mrunit.mapreduce.MapDriver;
 import org.apache.hadoop.mrunit.mapreduce.ReduceDriver;
 import org.junit.Before;
 import org.junit.Test;
-import warmup.word_count.WordCountMapper;
-import warmup.word_count.WordCountReducer;
+import warmup.total_word_count.TotalWordCountMapper;
+import warmup.total_word_count.TotalWordCountReducer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -32,8 +32,8 @@ public class TotalWordCountTest {
         Scanner scanner = new Scanner( inputFile );
         input = scanner.nextLine();
 
-        WordCountMapper mapper = new WordCountMapper();
-        WordCountReducer reducer = new WordCountReducer();
+        TotalWordCountMapper mapper = new TotalWordCountMapper();
+        TotalWordCountReducer reducer = new TotalWordCountReducer();
 
         mapDriver = MapDriver.newMapDriver( mapper );
         reduceDriver = ReduceDriver.newReduceDriver( reducer );

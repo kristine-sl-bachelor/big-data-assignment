@@ -11,7 +11,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
-import warmup.word_count.WordCount;
+import warmup.total_word_count.TotalWordCount;
 
 public class UniqueWords extends Configured implements Tool {
 
@@ -46,7 +46,7 @@ public class UniqueWords extends Configured implements Tool {
 
         String[] tempArgs = { args[ 0 ], TEMP };
 
-        return ToolRunner.run( new WordCount(), tempArgs );
+        return ToolRunner.run( new TotalWordCount(), tempArgs );
     }
 
     public int run( String[] args ) throws Exception {
@@ -55,8 +55,8 @@ public class UniqueWords extends Configured implements Tool {
 
         job.setJarByClass( UniqueWords.class );
         job.setJobName( "DBLP unique word counter" );
-        job.setMapperClass( UniqueWordCountMapper.class );
-        job.setReducerClass( UniqueWordCountReducer.class );
+        job.setMapperClass( UniqueWordsMapper.class );
+        job.setReducerClass( UniqueWordsReducer.class );
 
         job.setOutputKeyClass( Text.class );                // Word
         job.setOutputValueClass( NullWritable.class );      // No sum

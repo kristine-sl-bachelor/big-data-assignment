@@ -8,6 +8,7 @@ import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.util.ToolRunner;
 import warmup.unique_words.UniqueWords;
+import xml.XmlInputFormat;
 
 public class TitleWordCount {
 
@@ -51,14 +52,16 @@ public class TitleWordCount {
 
         job.setJarByClass( TitleWordCount.class );
         job.setJobName( "DBLP word character counter" );
-        job.setMapperClass( WordCharacterCountMapper.class );
-        job.setReducerClass( WordCharacterCountReducer.class );
+        job.setMapperClass( TitleWordCountMapper.class );
+        job.setReducerClass( TitleWordCountReducer.class );
 
-        job.setMapperClass( WordCharacterCountMapper.class );
-        job.setReducerClass( WordCharacterCountReducer.class );
+        job.setMapperClass( TitleWordCountMapper.class );
+        job.setReducerClass( TitleWordCountReducer.class );
 
         job.setOutputKeyClass( IntWritable.class );
         job.setOutputValueClass( NullWritable.class );
+
+        job.setInputFormatClass( XmlInputFormat.class );
 
         return job.waitForCompletion( true ) ? 0 : 1;
     }

@@ -27,8 +27,6 @@ public class UniqueWordsMapper extends Mapper< LongWritable, Text, Text, NullWri
 
             String[] tokens = scanner.nextLine().split( ", " );
 
-            System.out.println( tokens );
-
             context.write( new Text( tokens[ 0 ] ), NullWritable.get() );
         }
     }

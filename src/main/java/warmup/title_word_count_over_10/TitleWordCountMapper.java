@@ -4,9 +4,10 @@ import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
+import xml.XmlStringParser;
 
 import java.io.IOException;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
 
 public class TitleWordCountMapper extends Mapper< LongWritable, Text, Text, IntWritable > {
@@ -19,12 +20,19 @@ public class TitleWordCountMapper extends Mapper< LongWritable, Text, Text, IntW
     @Override
     protected void map( LongWritable key, Text value, Context context ) throws IOException, InterruptedException {
 
-        Scanner scanner = new Scanner( value.toString() );
+        String title = new XmlStringParser( value.toString() ).getValueFromTag( "title" );
 
-        while( scanner.hasNextLine() ) {
+        StringTokenizer tokenizer = new StringTokenizer( title );
 
-            String word = scanner.nextLine();
-            context.write( new Text(  ), new IntWritable( scanner.nextLine().length() ) );
+        int words = 0;
+
+        while ( tokenizer.hasMoreTokens() ) {
+
+            words++;
+            tokenizer.nextToken();
+
         }
+
+        context.write( new Text( title ), new IntWritable( words ) );
     }
 }

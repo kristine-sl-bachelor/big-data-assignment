@@ -18,14 +18,4 @@
         <value>&lt;/dblp&gt;</value>
     </property>
 
-    <property>
-        <name>childStartTag</name>
-        <value>&lt;article&gt;</value>
-    </property>
-
-    <property>
-        <name>childEndTag</name>
-        <value>&lt;/article&gt;</value>
-    </property>
-
 </configuration>
