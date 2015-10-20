@@ -1,11 +1,11 @@
 package warmup;
 
+import helpers.DriverOutput;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mrunit.mapreduce.MapDriver;
 import org.apache.hadoop.mrunit.mapreduce.ReduceDriver;
-import org.apache.hadoop.mrunit.types.Pair;
 import org.junit.Before;
 import org.junit.Test;
 import warmup.unique_words.UniqueWordsMapper;
@@ -53,7 +53,7 @@ public class UniqueWordsTest {
 
 
         mapDriver.withInput( new LongWritable(), new Text( input ) )
-                .withAllOutput( getOutput( word1, word2, word3 ) )
+                .withAllOutput( DriverOutput.getOutputTextNull( word1, word2, word3 ) )
                 .runTest();
 
     }
@@ -67,19 +67,7 @@ public class UniqueWordsTest {
         reduceDriver.withInput( new Text( word1 ), values )
                 .withInput( new Text( word2 ), values )
                 .withInput( new Text( word3 ), values )
-                .withAllOutput( getOutput( word1, word2, word3 ) )
+                .withAllOutput( DriverOutput.getOutputTextNull( word1, word2, word3 ) )
                 .runTest();
-    }
-
-    private List< Pair< Text, NullWritable > > getOutput( String... text ) {
-
-        List< Pair< Text, NullWritable > > output = new ArrayList< Pair< Text, NullWritable > >();
-
-        for ( String t : text ) {
-
-            output.add( new Pair< Text, NullWritable >( new Text( t ), NullWritable.get() ) );
-        }
-
-        return output;
     }
 }
