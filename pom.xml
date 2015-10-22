@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?_other.xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -9,6 +9,15 @@
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
+
+        <!-- Log4j -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.4.1</version>
+        </dependency>
+
+        <!-- DEVELOPMENT -->
 
         <!-- Hadoop -->
         <dependency>
@@ -21,6 +30,8 @@
             <artifactId>hadoop-client</artifactId>
             <version>2.7.1</version>
         </dependency>
+
+        <!-- TESTING -->
 
         <!-- JUnit 4 -->
         <dependency>
@@ -35,6 +46,13 @@
             <artifactId>mrunit</artifactId>
             <version>1.1.0</version>
             <classifier>hadoop2</classifier>
+        </dependency>
+
+        <!-- PigUnit -->
+        <dependency>
+            <groupId>org.apache.pig</groupId>
+            <artifactId>pigunit</artifactId>
+            <version>0.15.0</version>
         </dependency>
 
     </dependencies>
