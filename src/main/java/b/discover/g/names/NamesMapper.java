@@ -1,12 +1,13 @@
 package b.discover.g.names;
 
+import _other.xml.XmlStringParser;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
-import _other.xml.XmlStringParser;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class NamesMapper extends Mapper< LongWritable, Text, Text, IntWritable > {
@@ -16,9 +17,9 @@ public class NamesMapper extends Mapper< LongWritable, Text, Text, IntWritable >
 
         XmlStringParser parser = new XmlStringParser( value.toString() );
 
-        String author = parser.getValueFromTag( "author" );
+        List<String> authors = parser.getValuesFromTag( "author" );
 
-        while ( author != null ) {
+        for( String author: authors ) {
 
             StringTokenizer tokenizer = new StringTokenizer( author );
 
@@ -28,8 +29,6 @@ public class NamesMapper extends Mapper< LongWritable, Text, Text, IntWritable >
 
                 context.write( new Text( tokenizer.nextToken() ), Names.LAST_NAME );
             }
-
-            author = parser.getValueFromTag( "author" );
         }
     }
 }

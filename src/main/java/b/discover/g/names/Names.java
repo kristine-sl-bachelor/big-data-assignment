@@ -11,7 +11,7 @@ import _other.xml.XmlInputFormat;
 
 public class Names {
 
-    protected static final IntWritable FIRST_NAME = new IntWritable( 0 ), LAST_NAME = new IntWritable( 1 );
+    public static final IntWritable FIRST_NAME = new IntWritable( 0 ), LAST_NAME = new IntWritable( 1 );
 
     public static void main( String[] args ) {
 

@@ -23,7 +23,7 @@ public class TotalWordCountReducer extends Reducer< Text, IntWritable, Text, Int
             sum += value.get();
         }
 
-        Text output = new Text( StringFormat.format( key.toString(), StringFormat.FORMAT_WORD ) );
+        Text output = new Text( String.format( StringFormat.WORD, key.toString() ) );
 
         context.write( output, new IntWritable( sum ) );
     }

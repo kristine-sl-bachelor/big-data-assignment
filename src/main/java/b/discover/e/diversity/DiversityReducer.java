@@ -1,5 +1,6 @@
 package b.discover.e.diversity;
 
+import _other.helpers.StringFormat;
 import b.discover.c.over_50.AuthorsPublications;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -26,6 +27,7 @@ public class DiversityReducer extends Reducer< Text, Text, Text, Text > {
             else types.put( type, 1 );
 
             publications++;
+
         }
 
         if ( publications > AuthorsPublications.NUMBER_OF_AUTHORS ) {
@@ -38,7 +40,7 @@ public class DiversityReducer extends Reducer< Text, Text, Text, Text > {
 
                 if ( i != 0 ) allTypes += ", ";
 
-                allTypes += entry.getKey() + " (" + entry.getValue() + ")";
+                allTypes += String.format( StringFormat.TYPE, entry.getKey(), entry.getValue() );
 
                 i++;
             }

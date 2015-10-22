@@ -62,7 +62,7 @@ public class TotalWordCountTest {
             values.add( one );
         }
 
-        Text output = new Text( StringFormat.format( text.toString(), StringFormat.FORMAT_WORD ) );
+        Text output = new Text( String.format( StringFormat.WORD, text.toString() ) );
 
         reduceDriver.withInput( text, values )
                 .withOutput( output, sum )

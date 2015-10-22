@@ -1,11 +1,12 @@
 package b.discover.e.diversity;
 
+import _other.xml.XmlStringParser;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
-import _other.xml.XmlStringParser;
 
 import java.io.IOException;
+import java.util.List;
 
 public class DiversityMapper extends Mapper< LongWritable, Text, Text, Text > {
 
@@ -14,15 +15,13 @@ public class DiversityMapper extends Mapper< LongWritable, Text, Text, Text > {
 
         XmlStringParser parser = new XmlStringParser( value.toString() );
 
-        String author = parser.getValueFromTag( "author" );
+        List<String> authors = parser.getValuesFromTag( "author" );
 
-        while ( author != null ) {
+        String type = parser.getRootTagName();
 
-            String type = parser.getRootTagName();
+        for( String author : authors ) {
 
             context.write( new Text( author ), new Text( type ) );
-
-            author = parser.getValueFromTag( "author" );
         }
     }
 }

@@ -1,12 +1,13 @@
 package b.discover.b.unique_authors;
 
+import _other.xml.XmlStringParser;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
-import _other.xml.XmlStringParser;
 
 import java.io.IOException;
+import java.util.List;
 
 public class UniqueAuthorsMapper extends Mapper< LongWritable, Text, Text, IntWritable > {
 
@@ -17,13 +18,11 @@ public class UniqueAuthorsMapper extends Mapper< LongWritable, Text, Text, IntWr
 
         XmlStringParser parser = new XmlStringParser( value.toString() );
 
-        String author = parser.getValueFromTag( "author" );
+        List<String> authors = parser.getValuesFromTag( "author" );
 
-        while ( author != null ) { // TODO: Remove all of these if you don't need them
+        for( String author : authors ) {
 
             context.write( new Text( author ), ONE );
-
-            author = parser.getValueFromTag( "author" );
         }
 
     }

@@ -1,5 +1,6 @@
 package b.discover.g.names;
 
+import _other.helpers.StringFormat;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -11,6 +12,8 @@ import java.util.Map;
 public class NamesReducer extends Reducer< Text, IntWritable, Text, Text > {
 
     Map< String, Integer > firstNames, lastNames;
+
+    public static final Text FIRST_NAME_HEADER = new Text( "Most popular first name" ), LAST_NAME_HEADER = new Text( "Most popular last name");
 
     @Override
     protected void setup( Context context ) throws IOException, InterruptedException {
@@ -51,29 +54,29 @@ public class NamesReducer extends Reducer< Text, IntWritable, Text, Text > {
 
             String firstTemp = getMostPopularName( firstNames );
             firstNames.remove( firstTemp );
-            first += i + ": " + firstTemp + "\n";
+            first += String.format( StringFormat.NAME_POPULARITY, i, firstTemp );
 
             String lastTemp = getMostPopularName( lastNames );
             lastNames.remove( lastTemp );
-            last += i + ": " + lastTemp + "\n";
+            last += String.format( StringFormat.NAME_POPULARITY, i, lastTemp );
 
         }
 
-        context.write( new Text( "Most popular first name" ), new Text( "\n" + first ) );
-        context.write( new Text( "Most popular last name" ), new Text( "\n" + last ) );
+        context.write( FIRST_NAME_HEADER, new Text( "\n" + first ) );
+        context.write( LAST_NAME_HEADER, new Text( "\n" + last ) );
     }
 
     private String getMostPopularName( Map< String, Integer > map ) {
 
         String output = "";
-        int sum = 0;
+        int max = 0;
 
         for ( Map.Entry< String, Integer > name : map.entrySet() ) {
 
-            if ( name.getValue() > sum ) {
+            if ( name.getValue() > max ) {
 
                 output = name.getKey();
-                sum = name.getValue();
+                max = name.getValue();
 
             }
         }
