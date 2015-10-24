@@ -85,4 +85,9 @@ public class XmlStringParser {
 
         return doc.getDocumentElement().getAttributes().getNamedItem( "type" ).getNodeValue();
     }
+
+    public NodeList getChildElements() {
+
+        return doc.getDocumentElement().getChildNodes();
+    }
 }
