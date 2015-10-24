@@ -10,6 +10,9 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
+/**
+ * Outputs the number of times the word "useless" appear in titles in the XML document
+ */
 public class Useless {
 
     public static final String WORD = "useless";

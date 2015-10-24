@@ -1,7 +1,7 @@
 package a.warmup.a.total_word_count;
 
+import _other.xml.XmlInputFormat;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -9,9 +9,22 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Tool;
-import _other.xml.XmlInputFormat;
 
-public class TotalWordCount extends Configured implements Tool {
+/**
+ * === TRUE FOR ALL JOBS ===
+ *
+ * Implemented with run( String[] args) method, so that it is easily configurable if one needs to run one of the jobs
+ * with {@link org.apache.hadoop.util.ToolRunner#run(Tool, String[])}. All that is needed is to extend
+ * {@link org.apache.hadoop.conf.Configured} and implement {@link org.apache.hadoop.util.Tool}.
+ *
+ * =========================
+ */
+
+/**
+ * Prints a list of all the words in all the titles of the XML document, with a counter for the number of times the word occures in
+ * the document.
+ */
+public class TotalWordCount {
 
     public static void main( String[] args ) {
 
@@ -30,18 +43,18 @@ public class TotalWordCount extends Configured implements Tool {
 
         Configuration config = new Configuration();
 
-        config.addResource( "xml_config.xml" );
-
         final Job job = Job.getInstance( config );
 
         job.setJarByClass( TotalWordCount.class );
-        job.setJobName( "DBLP word counter" );
+        job.setJobName( "Word counter" );
         job.setMapperClass( TotalWordCountMapper.class );
         job.setReducerClass( TotalWordCountReducer.class );
+
+        // Custom InputFormat class for reading XML files
         job.setInputFormatClass( XmlInputFormat.class );
 
-        job.setOutputKeyClass( Text.class );            // Word
-        job.setOutputValueClass( IntWritable.class );   // Sum
+        job.setOutputKeyClass( Text.class );
+        job.setOutputValueClass( IntWritable.class );
 
         FileInputFormat.addInputPath( job, new Path( args[ 0 ] ) );
         FileOutputFormat.setOutputPath( job, new Path( args[ 1 ] ) );

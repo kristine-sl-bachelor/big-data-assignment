@@ -9,9 +9,17 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import _other.xml.XmlInputFormat;
 
+/**
+ * Outputs the top 5 most found first- and last names found for authors in the XML document
+ *
+ * Uses predefined values to differentiate between first and last names, represented by numbers so that it easy to add
+ * additional values, like middle name, if wanted.
+ */
 public class Names {
 
     public static final IntWritable FIRST_NAME = new IntWritable( 0 ), LAST_NAME = new IntWritable( 1 );
+
+    public static final int NUMBER_OF_AUTHORS = 5;
 
     public static void main( String[] args ) {
 

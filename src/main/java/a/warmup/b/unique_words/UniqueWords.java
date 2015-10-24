@@ -10,6 +10,9 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import _other.xml.XmlInputFormat;
 
+/**
+ * Outputs all the words in all the titles of the XML document that only appear once
+ */
 public class UniqueWords {
 
     public static void main( String[] args ) {
@@ -31,7 +34,7 @@ public class UniqueWords {
         final Job job = Job.getInstance( new Configuration() );
 
         job.setJarByClass( UniqueWords.class );
-        job.setJobName( "DBLP unique word counter" );
+        job.setJobName( "Unique word counter" );
         job.setMapperClass( UniqueWordsMapper.class );
         job.setReducerClass( UniqueWordsReducer.class );
         job.setInputFormatClass( XmlInputFormat.class );

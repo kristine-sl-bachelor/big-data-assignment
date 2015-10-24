@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Initializes a list of excluded words from a given file, and only outputs words that are not found in that list
+ */
 public class StopwordExcludeReducer extends Reducer< Text, IntWritable, Text, IntWritable > {
 
     private MultipleOutputs< Text, IntWritable > output;
@@ -36,15 +39,17 @@ public class StopwordExcludeReducer extends Reducer< Text, IntWritable, Text, In
 
         int sum = 0;
 
-        for( IntWritable value : values ) {
+        for ( IntWritable value : values ) {
 
             sum += value.get();
         }
 
         for ( String word : excludedWords ) {
 
-            if ( !key.toString().toLowerCase().equals( word.toLowerCase() ) )
+            if ( !key.toString().toLowerCase().equals( word.toLowerCase() ) ) {
+
                 output.write( StopwordExclude.FILE_NAME, key, sum );
+            }
         }
     }
 

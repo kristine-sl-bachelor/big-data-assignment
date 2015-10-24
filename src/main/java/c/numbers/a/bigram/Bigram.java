@@ -9,6 +9,9 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
+/**
+ * Outputs the top 10 most used bigrams in titles in the XML document
+ */
 public class Bigram {
 
     // Not specified, 10 is used in similar tasks

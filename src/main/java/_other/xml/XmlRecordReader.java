@@ -28,48 +28,54 @@ public class XmlRecordReader extends RecordReader< LongWritable, Text > {
 
     private String startTag, endTag;
 
+    /**
+     * Formats the given tag, only needs to know the root tag of the dokument
+     *
+     * @param tag Name of the root tag, in this case: "dblp"
+     */
     public XmlRecordReader( String tag ) {
 
         startTag = "<" + tag + ">";
         endTag = "</" + tag + ">";
     }
 
+    /**
+     * Initializes the necessary variables, and gets the {@link FSDataInputStream} past the root tag
+     */
     @Override
     public void initialize( InputSplit split, TaskAttemptContext context ) throws IOException, InterruptedException {
+
 
         FileSplit fileSplit = ( FileSplit ) split;
 
         start = fileSplit.getStart();
         end = start + fileSplit.getLength();
 
+        // Configure input
         Configuration config = context.getConfiguration();
-
         FileSystem fileSystem = fileSplit.getPath().getFileSystem( config );
-
         buffer = new DataOutputBuffer();
         input = fileSystem.open( fileSplit.getPath() );
         input.seek( start );
 
-        boolean tagFound = false;
-        int i = 0;
-
         // Gets input past root tag
-        while ( !tagFound ) {
+        int i = 0;
+        while ( i < startTag.length() ) {
 
             int in = input.read();
 
             if ( in == ( byte ) startTag.charAt( i ) ) i++;
             else i = 0;
-
-            if ( i == startTag.length() ) tagFound = true;
         }
     }
 
+    /**
+     * @return The next child element of the root tag, as a String ("<article>...</article>")
+     */
     @Override
     public boolean nextKeyValue() throws IOException, InterruptedException {
 
-        String currentTag = "";
-
+        // Make sure we skip any whitespaces placed before the current tag
         int temp = input.read();
 
         while ( temp != '<' ) {
@@ -77,48 +83,57 @@ public class XmlRecordReader extends RecordReader< LongWritable, Text > {
             temp = input.read();
         }
 
+        // Resets the buffer (buffer.reset() would not blank out values from last iteration)
+        buffer = new DataOutputBuffer();
 
-        if ( temp == ( byte ) '<' ) {
+        buffer.write( temp );
 
-            buffer.write( '<' );
+        // Saves our current tag name, so that we can check closing tag later.
+        // This negotiates the need to know all the tag names of the wanted tags, and makes the class highly reusable
+        String currentTag = getCurrentTag();
 
-            currentTag = getCurrentTag();
+        boolean inTag = false, closing = false;
 
-        }
-
-        boolean tag = false, closing = false;
-
-        while ( true ) {
-
-            if ( input.getPos() >= end ) return false;
+        while ( input.getPos() < end ) {
 
             int in = input.read();
 
+            // Bad input
             if ( in == -1 ) return false;
 
-            buffer.write( in );
+            if ( in == ( byte ) '<' ) inTag = true;
+            else if ( in == ( byte ) '>' ) inTag = false;
 
-            if ( in == ( byte ) '<' ) tag = true;
+            // Closing tag
+            if ( inTag && in == ( byte ) '/' ) {
 
-            if ( tag && in == ( byte ) '/' ) closing = true;
+                closing = true;
+                buffer.write( in );
+            }
 
             if ( closing ) {
 
                 String current = getCurrentTag();
 
+                // Checks to see if the closing tag we have found matches the current tag name. If true, we have found the entire
+                // child node, which is sent as a String with a Text object, to be parsed as needed in a mapper
                 if ( current.equals( currentTag ) ) {
 
                     key = new LongWritable( input.getPos() );
                     value = new Text( minimizeOutput( buffer.getData() ) );
 
-                    buffer.reset();
-
                     return true;
                 }
 
-                tag = closing = false;
+                closing = false;
+
+            } else {
+
+                buffer.write( in );
             }
         }
+
+        return false;
     }
 
     @Override
@@ -158,12 +173,17 @@ public class XmlRecordReader extends RecordReader< LongWritable, Text > {
 
             buffer.write( in );
 
-            if ( in == ( byte ) ' ' || in == (byte) '>' ) return output;
+            // Tag will only be one word, so if we find a space or closing brace, we know we have found the entire tag, and
+            // can return it.
+            if ( in == ( byte ) ' ' || in == ( byte ) '>' ) return output;
 
             output += ( char ) in;
         }
     }
 
+    /**
+     * @return A minimized version of the xml, without any unnecessary whitespaces
+     */
     private String minimizeOutput( byte[] formattedOutput ) {
 
         String formattedString = new String( formattedOutput, StandardCharsets.UTF_8 );

@@ -7,6 +7,10 @@ import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
 
+/**
+ * Simply outputs the number of times the reducer method is called, as all the keys sent in are unique, and already verified
+ * as publication type. This number represents the number of types of publications.
+ */
 public class CountingReducer extends Reducer< Text, NullWritable, IntWritable, NullWritable > {
 
     int topics;

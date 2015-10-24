@@ -7,30 +7,37 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.StringTokenizer;
 
+/**
+ * Outputs all combinations of three words found in the current title
+ */
 public class TrigramMapper extends Mapper< LongWritable, Text, Text, IntWritable > {
 
     @Override
     protected void map( LongWritable key, Text value, Context context ) throws IOException, InterruptedException {
 
-        String title = new XmlStringParser( value.toString() ).getValueFromTag( "title" );
+        List< String > titles = new XmlStringParser( value.toString() ).getValuesFromTag( "title" );
 
-        StringTokenizer tokenizer = new StringTokenizer( title );
+        if ( !titles.isEmpty() ) {
 
-        if ( tokenizer.countTokens() >= 3 ) {
+            StringTokenizer tokenizer = new StringTokenizer( titles.get( 0 ) );
 
-            String first = tokenizer.nextToken();
-            String middle = tokenizer.nextToken();
+            if ( tokenizer.countTokens() >= 3 ) {
 
-            while ( tokenizer.hasMoreTokens() ) {
+                String first = tokenizer.nextToken();
+                String middle = tokenizer.nextToken();
 
-                String last = tokenizer.nextToken();
+                while ( tokenizer.hasMoreTokens() ) {
 
-                context.write( new Text( ( first + " " + middle + " " + last ).toLowerCase() ), new IntWritable( 1 ) );
+                    String last = tokenizer.nextToken();
 
-                first = middle;
-                middle = last;
+                    context.write( new Text( ( first + " " + middle + " " + last ).toLowerCase() ), new IntWritable( 1 ) );
+
+                    first = middle;
+                    middle = last;
+                }
             }
         }
     }

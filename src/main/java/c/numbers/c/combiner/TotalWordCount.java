@@ -2,16 +2,20 @@ package c.numbers.c.combiner;
 
 import _other.xml.XmlInputFormat;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import org.apache.hadoop.util.Tool;
 
-public class TotalWordCount extends Configured implements Tool {
+/**
+ * Task a.a with a combiner, to study the effects.
+ *
+ * As pointed out below, this enables the Job to reduce the output for each split, in order to minimize the number of values
+ * passed onto the final reducer.
+ */
+public class TotalWordCount {
 
     public static void main( String[] args ) {
 
@@ -30,18 +34,25 @@ public class TotalWordCount extends Configured implements Tool {
 
         Configuration config = new Configuration();
 
-        config.addResource( "xml_config.xml" );
-
         final Job job = Job.getInstance( config );
 
         job.setJarByClass( TotalWordCount.class );
-        job.setJobName( "DBLP word counter" );
+        job.setJobName( "Word counter with combiner" );
         job.setMapperClass( TotalWordCountMapper.class );
         job.setReducerClass( TotalWordCountReducer.class );
         job.setInputFormatClass( XmlInputFormat.class );
 
-        job.setOutputKeyClass( Text.class );            // Word
-        job.setOutputValueClass( IntWritable.class );   // Sum
+        /**
+         * Finds the sum for each word before final reduce, to minimize the number of iterations through values
+         * needed for final reduce job.
+         *
+         * Uses the same reducer, as we just need the sum of the values, and it therefore doesn't matter if these
+         * are summed up more than once during the process.
+         */
+        job.setCombinerClass( TotalWordCountReducer.class );
+
+        job.setOutputKeyClass( Text.class );
+        job.setOutputValueClass( IntWritable.class );
 
         FileInputFormat.addInputPath( job, new Path( args[ 0 ] ) );
         FileOutputFormat.setOutputPath( job, new Path( args[ 1 ] ) );

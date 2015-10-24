@@ -1,15 +1,23 @@
 package b.discover.b.unique_authors;
 
+import _other.xml.XmlInputFormat;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import _other.xml.XmlInputFormat;
 
+/**
+ * === ASSUMPTION ===
+ *
+ * It is assumed that by "unique authors", the tasks means to just print each author once, not matter how many times they appear in the
+ * XML document. If it is meant that the tasks should output authors who only appear once in the document, it would simply be to
+ * implement same process as in {@link a.warmup.b.unique_words.UniqueWords}, and only output the authors with sum == 1 in reducer.
+ *
+ * ==================
+ */
 public class UniqueAuthors {
 
     public static void main( String[] args ) {
@@ -35,7 +43,6 @@ public class UniqueAuthors {
         job.setReducerClass( UniqueAuthorsReducer.class );
         job.setInputFormatClass( XmlInputFormat.class );
 
-        job.setMapOutputValueClass( IntWritable.class );
         job.setOutputKeyClass( Text.class );
         job.setOutputValueClass( NullWritable.class );
 

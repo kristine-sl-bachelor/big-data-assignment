@@ -10,6 +10,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.StringTokenizer;
 
+/**
+ * Maps all the names with an identifyer to show if first- or last name.
+ * Outputs first word in full name as first name, and all following words as last names.
+ */
 public class NamesMapper extends Mapper< LongWritable, Text, Text, IntWritable > {
 
     @Override

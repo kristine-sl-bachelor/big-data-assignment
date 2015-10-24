@@ -47,7 +47,7 @@ public class DiversityTest {
     @Test
     public void testReducer() throws IOException {
 
-        int numberOfType = AuthorsPublications.NUMBER_OF_AUTHORS + 1;
+        int numberOfType = AuthorsPublications.NUMBER_OF_PUBLICATIONS + 1;
 
         List< Text > type1 = getInputList( TYPE_1, numberOfType );
 

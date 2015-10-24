@@ -9,6 +9,10 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import _other.xml.XmlInputFormat;
 
+/**
+ * Outputs a list of authors who have more that 50 publications in the XML document, and the year of the first and last
+ * publication (first-last)
+ */
 public class ActivityYear {
 
     public static void main( String[] args ) {

@@ -1,5 +1,8 @@
 package _other.helpers;
 
+/**
+ * A class for validating and clean a word of characters that are not letters
+ */
 public class Word {
 
     /**
@@ -9,7 +12,7 @@ public class Word {
      * @param key   The word to be checked
      * @return      Whether or not the string is a word
      */
-    public static boolean isWord( String key ) {
+    public static boolean startsWithLetter( String key ) {
 
         return Character.isLetter( key.charAt( 0 ) );
     }

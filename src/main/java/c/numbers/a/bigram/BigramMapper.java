@@ -7,28 +7,33 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.StringTokenizer;
 
+/**
+ * Outputs all combinations of two words found in titles, so that they can be counted
+ */
 public class BigramMapper extends Mapper< LongWritable, Text, Text, IntWritable > {
-
-    private final IntWritable ONE = new IntWritable( 1 );
 
     @Override
     protected void map( LongWritable key, Text value, Context context ) throws IOException, InterruptedException {
 
-        String title = new XmlStringParser( value.toString() ).getValueFromTag( "title" );
+        List< String > titles = new XmlStringParser( value.toString() ).getValuesFromTag( "title" );
 
-        StringTokenizer tokenizer = new StringTokenizer( title );
+        if ( !titles.isEmpty() ) {
 
-        String previousToken = tokenizer.nextToken();
+            StringTokenizer tokenizer = new StringTokenizer( titles.get( 0 ) );
 
-        while ( tokenizer.hasMoreTokens() ) {
+            String previousToken = tokenizer.nextToken();
 
-            String currentToken = tokenizer.nextToken();
+            while ( tokenizer.hasMoreTokens() ) {
 
-            context.write( new Text( ( previousToken + " " + currentToken ).toLowerCase() ), ONE );
+                String currentToken = tokenizer.nextToken();
 
-            previousToken = currentToken;
+                context.write( new Text( ( previousToken + " " + currentToken ).toLowerCase() ), new IntWritable( 1 ) );
+
+                previousToken = currentToken;
+            }
         }
     }
 }

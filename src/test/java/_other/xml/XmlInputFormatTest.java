@@ -57,9 +57,10 @@ public class XmlInputFormatTest {
 
         setupReader( file );
 
-        reader.nextKeyValue();
+        while( reader.nextKeyValue()) {
 
-        assertEquals( outputString, reader.getCurrentValue().toString() );
+            assertEquals( outputString, reader.getCurrentValue().toString() );
+        }
     }
 
     private void setupReader( File inputFile ) throws IOException, InterruptedException {

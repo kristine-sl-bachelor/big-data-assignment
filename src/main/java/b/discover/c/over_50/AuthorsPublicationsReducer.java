@@ -28,7 +28,7 @@ public class AuthorsPublicationsReducer extends Reducer< Text, IntWritable, IntW
             publications += value.get();
         }
 
-        if ( publications > AuthorsPublications.NUMBER_OF_AUTHORS ) authors++;
+        if ( publications > AuthorsPublications.NUMBER_OF_PUBLICATIONS ) authors++;
     }
 
     @Override

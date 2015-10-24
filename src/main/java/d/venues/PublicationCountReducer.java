@@ -11,6 +11,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Since venues are reccurent, and several publications may belong to same venue for same year, we only count each venue
+ * once per unique year. Class then outputs a list of top 10 venues, based of the abovementioned count.
+ */
 public class PublicationCountReducer extends Reducer< Text, IntWritable, Text, IntWritable > {
 
     Map< String, Integer > venues;

@@ -10,6 +10,9 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
+/**
+ * Returns the number of different kinds of publications in the XML document
+ */
 public class Counting {
 
     public static void main( String[] args ) {

@@ -8,6 +8,9 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
+/**
+ * Outputs a top 10 list of words found in titles, where selected common words are excluded
+ */
 public class Topic {
 
     public static final int NUMBER_OF_TOPICS = 10;

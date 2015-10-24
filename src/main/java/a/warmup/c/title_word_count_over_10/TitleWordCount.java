@@ -1,5 +1,6 @@
 package a.warmup.c.title_word_count_over_10;
 
+import _other.xml.XmlInputFormat;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -8,8 +9,10 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import _other.xml.XmlInputFormat;
 
+/**
+ * Outputs the number of titles in the XML document which consists of more that 10 words
+ */
 public class TitleWordCount {
 
     public static void main( String[] args ) {
@@ -27,7 +30,7 @@ public class TitleWordCount {
 
     public int run( String[] args ) throws Exception {
 
-        final Job job = Job.getInstance( new Configuration(  ) );
+        final Job job = Job.getInstance( new Configuration() );
 
         job.setJarByClass( TitleWordCount.class );
         job.setJobName( "DBLP word character counter" );

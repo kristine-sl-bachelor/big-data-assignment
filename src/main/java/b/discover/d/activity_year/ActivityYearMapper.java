@@ -9,6 +9,9 @@ import org.apache.hadoop.mapreduce.Mapper;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Outputs the name of each of the authors for the publication, with the year of the current publication as a number
+ */
 public class ActivityYearMapper extends Mapper< LongWritable, Text, Text, IntWritable > {
 
     @Override
@@ -16,11 +19,11 @@ public class ActivityYearMapper extends Mapper< LongWritable, Text, Text, IntWri
 
         XmlStringParser parser = new XmlStringParser( value.toString() );
 
-        List<String> authors = parser.getValuesFromTag( "author" );
+        List< String > authors = parser.getValuesFromTag( "author" );
 
-        int year = Integer.parseInt( parser.getValueFromTag( "year" ) );
+        int year = Integer.parseInt( parser.getValuesFromTag( "year" ).get( 0 ) );
 
-        for( String author : authors ) {
+        for ( String author : authors ) {
 
             context.write( new Text( author ), new IntWritable( year ) );
         }

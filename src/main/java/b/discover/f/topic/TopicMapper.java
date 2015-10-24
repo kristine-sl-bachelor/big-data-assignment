@@ -7,25 +7,27 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class TopicMapper extends Mapper< LongWritable, Text, Text, IntWritable > {
-
-    private final IntWritable ONE = new IntWritable( 1 );
 
     @Override
     protected void map( LongWritable key, Text value, Context context ) throws IOException, InterruptedException {
 
         XmlStringParser parser = new XmlStringParser( value.toString() );
 
-        String title = parser.getValueFromTag( "title" );
+        List< String > titles = parser.getValuesFromTag( "title" );
 
-        StringTokenizer tokenizer = new StringTokenizer( title );
+        if ( !titles.isEmpty() ) {
 
-        while ( tokenizer.hasMoreTokens() ) {
+            StringTokenizer tokenizer = new StringTokenizer( titles.get( 0 ) );
 
-            context.write( new Text( tokenizer.nextToken() ), ONE );
+            while ( tokenizer.hasMoreTokens() ) {
 
+                context.write( new Text( tokenizer.nextToken() ), new IntWritable( 1 ) );
+
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package b.discover.c.over_50;
 
+import _other.xml.XmlInputFormat;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -8,11 +9,22 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import _other.xml.XmlInputFormat;
 
+/**
+ * === ASSUMPTION ===
+ *
+ * In testing, we could not find any tag named "co-author", so by co-author, we assume that the task reffers to the fact that
+ * one publication can have several "author" tags.
+ *
+ * ==================
+ */
+
+/**
+ * Outputs the number of authors with over 50 registered publications in the XML document
+ */
 public class AuthorsPublications {
 
-    public static final int NUMBER_OF_AUTHORS = 50;
+    public static final int NUMBER_OF_PUBLICATIONS = 50;
 
     public static void main( String[] args ) {
 

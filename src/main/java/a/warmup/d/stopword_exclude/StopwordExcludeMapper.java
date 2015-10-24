@@ -1,29 +1,31 @@
 package a.warmup.d.stopword_exclude;
 
+import _other.xml.XmlStringParser;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
-import _other.xml.XmlStringParser;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class StopwordExcludeMapper extends Mapper< LongWritable, Text, Text, IntWritable > {
 
-    private final IntWritable ONE = new IntWritable( 1 );
-
     @Override
     protected void map( LongWritable key, Text value, Context context ) throws IOException, InterruptedException {
 
-        String title = new XmlStringParser( value.toString() ).getValueFromTag( "title" );
+        List< String > titles = new XmlStringParser( value.toString() ).getValuesFromTag( "title" );
 
-        StringTokenizer tokenizer = new StringTokenizer( title );
+        if ( !titles.isEmpty() ) {
 
-        while ( tokenizer.hasMoreTokens() ) {
+            StringTokenizer tokenizer = new StringTokenizer( titles.get( 0 ) );
 
-            Text text = new Text( tokenizer.nextToken() );
-            context.write( text, ONE );
+            while ( tokenizer.hasMoreTokens() ) {
+
+                Text text = new Text( tokenizer.nextToken() );
+                context.write( text, new IntWritable( 1 ) );
+            }
         }
     }
 }

@@ -30,7 +30,7 @@ public class DiversityReducer extends Reducer< Text, Text, Text, Text > {
 
         }
 
-        if ( publications > AuthorsPublications.NUMBER_OF_AUTHORS ) {
+        if ( publications > AuthorsPublications.NUMBER_OF_PUBLICATIONS ) {
 
             String allTypes = "";
 

@@ -8,6 +8,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class UselessMapper extends Mapper< LongWritable, Text, Text, IntWritable > {
@@ -15,16 +16,18 @@ public class UselessMapper extends Mapper< LongWritable, Text, Text, IntWritable
     @Override
     protected void map( LongWritable key, Text value, Context context ) throws IOException, InterruptedException {
 
-        String title = new XmlStringParser( value.toString() ).getValueFromTag( "title" );
+        List< String > titles = new XmlStringParser( value.toString() ).getValuesFromTag( "title" );
 
-        StringTokenizer tokenizer = new StringTokenizer( title );
+        if ( !titles.isEmpty() ) {
 
-        while ( tokenizer.hasMoreTokens() ) {
+            StringTokenizer tokenizer = new StringTokenizer( titles.get( 0 ) );
 
-            if ( Word.cleanWord( tokenizer.nextToken().toLowerCase() ).equals( "useless" ) ) {
+            while ( tokenizer.hasMoreTokens() ) {
 
-                context.write( new Text( title), new IntWritable( 1 ) );
-                break;
+                if ( Word.cleanWord( tokenizer.nextToken().toLowerCase() ).equals( "useless" ) ) {
+
+                    context.write( new Text( titles.get( 0 ) ), new IntWritable( 1 ) );
+                }
             }
         }
     }

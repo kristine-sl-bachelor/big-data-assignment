@@ -1,5 +1,6 @@
 package e.search_engine;
 
+import _other.helpers.StringFormat;
 import _other.helpers.Word;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -43,7 +44,7 @@ public class TitleIndexReducer extends Reducer< Text, Text, Text, Text > {
                 output += value.toString();
             }
 
-            context.write( new Text( word ), new Text( output ) );
+            context.write( new Text( String.format( StringFormat.WORD, word ) ), new Text( output ) );
         }
     }
 }

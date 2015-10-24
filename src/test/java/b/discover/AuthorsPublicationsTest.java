@@ -51,8 +51,8 @@ public class AuthorsPublicationsTest {
     @Test
     public void testReducer() throws IOException {
 
-        reduceDriver.withInput( new Text( AUTHOR_1 ), getIntList( 1, AuthorsPublications.NUMBER_OF_AUTHORS + 1) )
-                .withInput( new Text( AUTHOR_2 ), getIntList( 1, AuthorsPublications.NUMBER_OF_AUTHORS ) )
+        reduceDriver.withInput( new Text( AUTHOR_1 ), getIntList( 1, AuthorsPublications.NUMBER_OF_PUBLICATIONS + 1) )
+                .withInput( new Text( AUTHOR_2 ), getIntList( 1, AuthorsPublications.NUMBER_OF_PUBLICATIONS ) )
                 .withOutput( new IntWritable( 1 ), NullWritable.get() )
                 .runTest();
     }

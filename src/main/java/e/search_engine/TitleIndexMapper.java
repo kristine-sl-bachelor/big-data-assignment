@@ -7,8 +7,12 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.StringTokenizer;
 
+/**
+ * Gets the location for the word from "type" on the root tag
+ */
 public class TitleIndexMapper extends Mapper< LongWritable, Text, Text, Text > {
 
     @Override
@@ -17,13 +21,16 @@ public class TitleIndexMapper extends Mapper< LongWritable, Text, Text, Text > {
         XmlStringParser parser = new XmlStringParser( value.toString() );
         Text attributeKey = new Text( parser.getRootAttributeType() );
 
-        String title = parser.getValueFromTag( "title" );
+        List< String > titles = parser.getValuesFromTag( "title" );
 
-        StringTokenizer tokenizer = new StringTokenizer( title );
+        if ( !titles.isEmpty() ) {
 
-        while ( tokenizer.hasMoreTokens() ) {
+            StringTokenizer tokenizer = new StringTokenizer( titles.get( 0 ) );
 
-            context.write( new Text( Word.cleanWord( tokenizer.nextToken() ).toLowerCase() ), attributeKey );
+            while ( tokenizer.hasMoreTokens() ) {
+
+                context.write( new Text( Word.cleanWord( tokenizer.nextToken() ).toLowerCase() ), attributeKey );
+            }
         }
     }
 }

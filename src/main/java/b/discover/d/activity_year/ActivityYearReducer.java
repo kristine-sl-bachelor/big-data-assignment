@@ -7,6 +7,9 @@ import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
 
+/**
+ * Finds the oldest and newest registerred years, and outputs the author and years.
+ */
 public class ActivityYearReducer extends Reducer< Text, IntWritable, Text, Text > {
 
     @Override
@@ -24,6 +27,6 @@ public class ActivityYearReducer extends Reducer< Text, IntWritable, Text, Text 
             publications++;
         }
 
-        if ( publications > AuthorsPublications.NUMBER_OF_AUTHORS ) context.write( key, new Text( minYear + "-" + maxYear ) );
+        if ( publications > AuthorsPublications.NUMBER_OF_PUBLICATIONS ) context.write( key, new Text( minYear + "-" + maxYear ) );
     }
 }

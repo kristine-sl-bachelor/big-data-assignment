@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Outputs the most used bigrams
+ */
 public class BigramReducer extends Reducer< Text, IntWritable, Text, IntWritable > {
 
     Map< String, Integer > bigrams;

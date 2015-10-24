@@ -1,9 +1,6 @@
 package e.search_engine;
 
 import _other.xml.XmlInputFormat;
-import d.venues.PublicationCount;
-import d.venues.PublicationCountMapper;
-import d.venues.PublicationCountReducer;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
@@ -11,6 +8,10 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
+/**
+ * Makes an index for each word in the XML document, with common words excluded, containing the word and a
+ * collection of locations for where to find the word, seperated with ";".
+ */
 public class TitleIndex {
 
     public static void main( String[] args ) {

@@ -9,6 +9,9 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
+/**
+ * Outputs the top 10 most used venues for publications in the XML document
+ */
 public class PublicationCount {
 
     public static final int OUTPUTS = 10;

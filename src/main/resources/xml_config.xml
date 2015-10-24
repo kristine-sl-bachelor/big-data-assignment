@@ -2,20 +2,9 @@
 
 <configuration>
 
-    <!--
-            Special characters:
-            < : &lt;
-            > : &gt;
-    -->
-
     <property>
-        <name>fileStartTag</name>
-        <value>&lt;dblp&gt;</value>
-    </property>
-
-    <property>
-        <name>fileEndTag</name>
-        <value>&lt;/dblp&gt;</value>
+        <name>tag</name>
+        <value>dblp</value>
     </property>
 
 </configuration>

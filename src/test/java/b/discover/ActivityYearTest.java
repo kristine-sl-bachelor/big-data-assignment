@@ -55,8 +55,8 @@ public class ActivityYearTest {
 
         int[] years = { YEAR_2, YEAR_1 };
 
-        reduceDriver.withInput( new Text( AUTHOR_1 ), getYearList( years, AuthorsPublications.NUMBER_OF_AUTHORS + 1 ) )
-                .withInput( new Text( AUTHOR_2 ), getYearList( years, AuthorsPublications.NUMBER_OF_AUTHORS ) )
+        reduceDriver.withInput( new Text( AUTHOR_1 ), getYearList( years, AuthorsPublications.NUMBER_OF_PUBLICATIONS + 1 ) )
+                .withInput( new Text( AUTHOR_2 ), getYearList( years, AuthorsPublications.NUMBER_OF_PUBLICATIONS ) )
                 .withOutput( new Text( AUTHOR_1 ), new Text( YEAR_1 + "-" + YEAR_2 ) )
                 .runTest();
     }

@@ -8,6 +8,9 @@ import org.apache.hadoop.mapreduce.Mapper;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Outputs the name of each of the authors for the current publication, and the publication type
+ */
 public class DiversityMapper extends Mapper< LongWritable, Text, Text, Text > {
 
     @Override

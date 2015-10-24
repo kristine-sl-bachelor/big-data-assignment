@@ -8,6 +8,10 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import _other.xml.XmlInputFormat;
 
+/**
+ * Outputs a list of authors who have over 50 publications in the XML document, and the different kinds of publications they have,
+ * with a counter for each kind.
+ */
 public class Diversity {
 
     public static void main( String[] args ) {

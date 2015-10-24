@@ -7,11 +7,11 @@ import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
 
+/**
+ * Finds the words that have only been used once, and prints the word (no counter)
+ */
 public class UniqueWordsReducer extends Reducer< Text, IntWritable, Text, NullWritable > {
 
-    /**
-     * Finds the words that have only been used once, and prints the word, without the sum (the sum is always 1)
-     */
     @Override
     protected void reduce( Text key, Iterable< IntWritable > values, Context context ) throws IOException, InterruptedException {
 

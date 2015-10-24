@@ -8,6 +8,9 @@ import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
 
+/**
+ * Outputs the name of the current root tag, which is the identifyer for the publication
+ */
 public class CountingMapper extends Mapper< LongWritable, Text, Text, NullWritable > {
 
     @Override

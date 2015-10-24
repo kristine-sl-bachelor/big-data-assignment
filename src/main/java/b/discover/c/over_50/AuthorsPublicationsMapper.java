@@ -11,8 +11,6 @@ import java.util.List;
 
 public class AuthorsPublicationsMapper extends Mapper< LongWritable, Text, Text, IntWritable > {
 
-    private final IntWritable ONE = new IntWritable( 1 );
-
     @Override
     protected void map( LongWritable key, Text value, Context context ) throws IOException, InterruptedException {
 
@@ -22,7 +20,7 @@ public class AuthorsPublicationsMapper extends Mapper< LongWritable, Text, Text,
 
         for ( String author : authors ) {
 
-            context.write( new Text( author ), ONE );
+            context.write( new Text( author ), new IntWritable( 1 ) );
         }
     }
 }

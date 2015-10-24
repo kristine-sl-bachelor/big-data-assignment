@@ -1,9 +1,6 @@
 package c.numbers.e.method;
 
 import _other.xml.XmlInputFormat;
-import c.numbers.d.useless.Useless;
-import c.numbers.d.useless.UselessMapper;
-import c.numbers.d.useless.UselessReducer;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -13,6 +10,9 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
+/**
+ * Outputs the number of times the word "method" appears in titles in the XML document
+ */
 public class Method {
 
     public static final String WORD = "mehod";

@@ -10,11 +10,16 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Outputs a top 5 list of names of authors.
+ *
+ * Uses predefined values to differentiate between first- and last names.
+ */
 public class NamesReducer extends Reducer< Text, IntWritable, Text, Text > {
 
     Map< String, Integer > firstNames, lastNames;
 
-    public static final Text FIRST_NAME_HEADER = new Text( "Most popular first name" ), LAST_NAME_HEADER = new Text( "Most popular last name");
+    public static final Text FIRST_NAME_HEADER = new Text( "Most popular first name" ), LAST_NAME_HEADER = new Text( "Most popular last name" );
 
     @Override
     protected void setup( Context context ) throws IOException, InterruptedException {
@@ -51,7 +56,7 @@ public class NamesReducer extends Reducer< Text, IntWritable, Text, Text > {
 
         String first = "", last = "";
 
-        for ( int i = 1; i <= 5; i++ ) {
+        for ( int i = 1; i <= Names.NUMBER_OF_AUTHORS; i++ ) {
 
             String firstTemp = MapSorter.getHighestValue( firstNames );
             firstNames.remove( firstTemp );

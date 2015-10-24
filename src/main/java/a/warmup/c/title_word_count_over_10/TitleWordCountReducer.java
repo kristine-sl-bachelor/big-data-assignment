@@ -7,6 +7,9 @@ import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
 
+/**
+ * Outputs the number of titles which consist of more than 10 words
+ */
 public class TitleWordCountReducer extends Reducer< Text, IntWritable, IntWritable, NullWritable > {
 
     private int numberOfTitles;
@@ -27,6 +30,7 @@ public class TitleWordCountReducer extends Reducer< Text, IntWritable, IntWritab
             if( value.get() >= 10 ) {
 
                 numberOfTitles++;
+                break;
             }
         }
     }
