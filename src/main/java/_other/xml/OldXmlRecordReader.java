@@ -15,7 +15,12 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
-public class XmlRecordReader extends RecordReader< LongWritable, Text > {
+public class OldXmlRecordReader extends RecordReader< LongWritable, Text > {
+
+    private String[] tags;
+
+    private byte[][] tagsStart;
+    private byte[][] tagsEnd;
 
     private long start;
     private long end;
@@ -26,16 +31,25 @@ public class XmlRecordReader extends RecordReader< LongWritable, Text > {
     private LongWritable key;
     private Text value;
 
-    private String startTag, endTag;
+    public OldXmlRecordReader( String... tags ) {
 
-    public XmlRecordReader( String tag ) {
-
-        startTag = "<" + tag + ">";
-        endTag = "</" + tag + ">";
+        this.tags = tags;
     }
 
     @Override
     public void initialize( InputSplit split, TaskAttemptContext context ) throws IOException, InterruptedException {
+
+        tagsStart = new byte[ tags.length ][];
+        tagsEnd = new byte[ tags.length ][];
+
+        for ( int i = 0; i < tags.length; i++ ) {
+
+            // Using StandardCharsets.UTF-8 negotiates the need for check for UnsupportedEncodingException
+
+            tagsStart[ i ] = ( "<" + tags[ i ] ).getBytes( StandardCharsets.UTF_8 );
+            tagsEnd[ i ] = ( "</" + tags[ i ] + ">" ).getBytes( StandardCharsets.UTF_8 );
+
+        }
 
         FileSplit fileSplit = ( FileSplit ) split;
 
@@ -49,76 +63,28 @@ public class XmlRecordReader extends RecordReader< LongWritable, Text > {
         buffer = new DataOutputBuffer();
         input = fileSystem.open( fileSplit.getPath() );
         input.seek( start );
-
-        boolean tagFound = false;
-        int i = 0;
-
-        // Gets input past root tag
-        while ( !tagFound ) {
-
-            int in = input.read();
-
-            if ( in == ( byte ) startTag.charAt( i ) ) i++;
-            else i = 0;
-
-            if ( i == startTag.length() ) tagFound = true;
-        }
     }
 
     @Override
     public boolean nextKeyValue() throws IOException, InterruptedException {
 
-        String currentTag = "";
+        if ( input.getPos() >= end ) return false;
 
-        int temp = input.read();
+        if ( tagFound( tagsStart, false ) ) { // Find opening tag
 
-        while ( temp != '<' ) {
+            if ( tagFound( tagsEnd, true ) ) { // Find closing tag (data will be written to buffer because inTag = true)
 
-            temp = input.read();
-        }
+                key = new LongWritable( input.getPos() );
+                value = new Text();
+                value.set( minimizeOutput( buffer.getData() ) );
 
+                buffer.reset(); // Reset buffer for next stream
 
-        if ( temp == ( byte ) '<' ) {
-
-            buffer.write( '<' );
-
-            currentTag = getCurrentTag();
-
-        }
-
-        boolean tag = false, closing = false;
-
-        while ( true ) {
-
-            if ( input.getPos() >= end ) return false;
-
-            int in = input.read();
-
-            if ( in == -1 ) return false;
-
-            buffer.write( in );
-
-            if ( in == ( byte ) '<' ) tag = true;
-
-            if ( tag && in == ( byte ) '/' ) closing = true;
-
-            if ( closing ) {
-
-                String current = getCurrentTag();
-
-                if ( current.equals( currentTag ) ) {
-
-                    key = new LongWritable( input.getPos() );
-                    value = new Text( minimizeOutput( buffer.getData() ) );
-
-                    buffer.reset();
-
-                    return true;
-                }
-
-                tag = closing = false;
+                return true;
             }
         }
+
+        return false;
     }
 
     @Override
@@ -148,19 +114,43 @@ public class XmlRecordReader extends RecordReader< LongWritable, Text > {
         input.close();
     }
 
-    private String getCurrentTag() throws IOException {
+    private boolean tagFound( byte[][] tags, boolean inTag ) throws IOException {
 
-        String output = "";
+        int i = 0;
+
+        boolean tagFound;
 
         while ( true ) {
 
-            byte in = ( byte ) input.read();
+            int data = input.read(); // Reads the next byte of data from the data stream
 
-            buffer.write( in );
+            if ( data == -1 ) return false;
 
-            if ( in == ( byte ) ' ' || in == (byte) '>' ) return output;
+            if ( inTag ) buffer.write( data ); // Data inside found tag
 
-            output += ( char ) in;
+            tagFound = false;
+
+            for ( byte[] tag : tags ) {
+
+                if ( i < tag.length && tag[ i ] == data ) { // Byte in tag found
+
+                    tagFound = true;
+                    i++;
+
+                    if ( i == tag.length ) { // Entire tag found
+
+                        if ( !inTag ) buffer.write( tag ); // Already written to buffer if in tag
+                        return true;
+                    }
+
+                    break;
+                }
+            }
+
+            if ( !tagFound ) i = 0;
+
+            if ( !inTag && input.getPos() >= end ) return false; // At the end of the file, no tag found
+
         }
     }
 

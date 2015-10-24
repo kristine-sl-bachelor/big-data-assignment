@@ -18,12 +18,11 @@ public class UniqueAuthorsMapper extends Mapper< LongWritable, Text, Text, IntWr
 
         XmlStringParser parser = new XmlStringParser( value.toString() );
 
-        List<String> authors = parser.getValuesFromTag( "author" );
+        List< String > authors = parser.getValuesFromTag( "author" );
 
-        for( String author : authors ) {
+        for ( String author : authors ) {
 
             context.write( new Text( author ), ONE );
         }
-
     }
 }

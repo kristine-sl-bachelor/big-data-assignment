@@ -1,5 +1,6 @@
 package b.discover.g.names;
 
+import _other.helpers.MapSorter;
 import _other.helpers.StringFormat;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -52,13 +53,13 @@ public class NamesReducer extends Reducer< Text, IntWritable, Text, Text > {
 
         for ( int i = 1; i <= 5; i++ ) {
 
-            String firstTemp = getMostPopularName( firstNames );
+            String firstTemp = MapSorter.getHighestValue( firstNames );
             firstNames.remove( firstTemp );
-            first += String.format( StringFormat.NAME_POPULARITY, i, firstTemp );
+            first += String.format( StringFormat.POPULARITY, i, firstTemp );
 
-            String lastTemp = getMostPopularName( lastNames );
+            String lastTemp = MapSorter.getHighestValue( lastNames );
             lastNames.remove( lastTemp );
-            last += String.format( StringFormat.NAME_POPULARITY, i, lastTemp );
+            last += String.format( StringFormat.POPULARITY, i, lastTemp );
 
         }
 
@@ -66,21 +67,4 @@ public class NamesReducer extends Reducer< Text, IntWritable, Text, Text > {
         context.write( LAST_NAME_HEADER, new Text( "\n" + last ) );
     }
 
-    private String getMostPopularName( Map< String, Integer > map ) {
-
-        String output = "";
-        int max = 0;
-
-        for ( Map.Entry< String, Integer > name : map.entrySet() ) {
-
-            if ( name.getValue() > max ) {
-
-                output = name.getKey();
-                max = name.getValue();
-
-            }
-        }
-
-        return output;
-    }
 }

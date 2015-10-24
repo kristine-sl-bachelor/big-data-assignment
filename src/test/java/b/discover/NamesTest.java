@@ -68,8 +68,8 @@ public class NamesTest {
 
         for ( int i = 1; i <= 5; i++ ) {
 
-            firstNameOutput += String.format( StringFormat.NAME_POPULARITY, i, firstNames.get( i - 1 ) );
-            lastNameOutput += String.format( StringFormat.NAME_POPULARITY, i, lastNames.get( i - 1 ) );
+            firstNameOutput += String.format( StringFormat.POPULARITY, i, firstNames.get( i - 1 ) );
+            lastNameOutput += String.format( StringFormat.POPULARITY, i, lastNames.get( i - 1 ) );
         }
 
         reduceDriver.withInput( new Text( firstNames.get( 0 ) ), getInputList( Names.FIRST_NAME, nrOne ) )

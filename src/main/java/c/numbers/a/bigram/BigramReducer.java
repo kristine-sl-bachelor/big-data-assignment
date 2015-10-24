@@ -1,6 +1,7 @@
-package b.discover.f.topic;
+package c.numbers.a.bigram;
 
 import _other.helpers.MapSorter;
+import _other.helpers.StringFormat;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -9,39 +10,39 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TopicReducer extends Reducer< Text, IntWritable, Text, IntWritable > {
+public class BigramReducer extends Reducer< Text, IntWritable, Text, IntWritable > {
 
-    Map< String, Integer > words;
+    Map< String, Integer > bigrams;
 
     @Override
     protected void setup( Context context ) throws IOException, InterruptedException {
 
-        words = new HashMap< String, Integer >();
+        bigrams = new HashMap< String, Integer >();
     }
 
     @Override
     protected void reduce( Text key, Iterable< IntWritable > values, Context context ) throws IOException, InterruptedException {
 
+        int sum = 0;
+
         for ( IntWritable value : values ) {
 
-            String word = key.toString();
-
-            if ( words.containsKey( word ) ) words.put( word, words.get( word ) + value.get() );
-
-            else words.put( word, value.get() );
+            sum += value.get();
         }
+
+        bigrams.put( key.toString(), sum );
+
     }
 
     @Override
     protected void cleanup( Context context ) throws IOException, InterruptedException {
 
-        for ( int i = 0; i < Topic.NUMBER_OF_TOPICS; i++ ) {
+        for( int i = 1; i <= Bigram.OUTPUTS; i++ ) {
 
-            String word = MapSorter.getHighestValue( words );
+            String bigram = MapSorter.getHighestValue( bigrams );
+            context.write( new Text( String.format( StringFormat.POPULARITY, i, bigram ) ), new IntWritable( bigrams.get( bigram ) )  );
 
-            context.write( new Text( word ), new IntWritable( words.get( word ) ) );
-
-            words.remove( word );
+            bigrams.remove( bigram );
         }
     }
 }

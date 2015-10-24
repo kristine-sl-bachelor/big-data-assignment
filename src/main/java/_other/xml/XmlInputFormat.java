@@ -12,7 +12,6 @@ public class XmlInputFormat extends TextInputFormat {
     @Override
     public RecordReader< LongWritable, Text > createRecordReader( InputSplit split, TaskAttemptContext context ) {
 
-        return new XmlRecordReader( "article", "inproceedings", "proceedings",
-                "book", "incollection", "phdthesis", "mastersthesis", "www" );
+        return new XmlRecordReader( "dblp" );
     }
 }

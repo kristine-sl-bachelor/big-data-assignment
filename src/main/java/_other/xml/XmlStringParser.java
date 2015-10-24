@@ -80,4 +80,9 @@ public class XmlStringParser {
 
         return doc.getDocumentElement().getTagName();
     }
+
+    public String getRootAttributeType() {
+
+        return doc.getDocumentElement().getAttributes().getNamedItem( "type" ).getNodeValue();
+    }
 }
