@@ -40,10 +40,13 @@ public class BigramReducer extends Reducer< Text, IntWritable, Text, IntWritable
     @Override
     protected void cleanup( Context context ) throws IOException, InterruptedException {
 
-        for( int i = 1; i <= Bigram.OUTPUTS; i++ ) {
+        for ( int i = 1; i <= Bigram.OUTPUTS; i++ ) {
 
             String bigram = MapSorter.getHighestValue( bigrams );
-            context.write( new Text( String.format( StringFormat.POPULARITY, i, bigram ) ), new IntWritable( bigrams.get( bigram ) )  );
+
+            if ( bigram.equals( "" ) ) break;
+
+            context.write( new Text( String.format( StringFormat.POPULARITY, i, bigram ) ), new IntWritable( bigrams.get( bigram ) ) );
 
             bigrams.remove( bigram );
         }

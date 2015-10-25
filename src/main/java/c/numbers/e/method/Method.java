@@ -15,7 +15,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
  */
 public class Method {
 
-    public static final String WORD = "mehod";
+    public static final String WORD = "method";
 
     public static void main( String[] args ) {
 

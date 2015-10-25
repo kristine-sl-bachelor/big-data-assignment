@@ -7,6 +7,7 @@ import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +27,28 @@ public class XmlStringParser {
 
             InputSource input = new InputSource();
 
-            input.setCharacterStream( new StringReader( escapedXml ) );
-            doc = builder.parse( input );
+            try {
 
-        } catch ( Exception e ) {
+                input.setCharacterStream( new StringReader( escapedXml ) );
+                doc = builder.parse( input );
+
+            }
+            // If for some reason, the xml still can't be parsed properly, or the InputSource is not functioning properly.
+            catch ( Exception e) {
+
+                input.setCharacterStream( new StringReader( "<tag></tag>" ) );
+
+                try {
+                    doc = builder.parse( input );
+
+                } catch ( Exception e2 ) {
+
+                    // Something has gone horribly wrong
+                    System.exit( -1 );
+                }
+            }
+
+        } catch ( ParserConfigurationException e ) {
 
             e.printStackTrace();
         }
@@ -141,9 +160,9 @@ public class XmlStringParser {
     /**
      * @return The value for the attribute "type", for the root tag of the element
      */
-    public String getRootAttributeType() {
+    public String getRootAttributeKey() {
 
-        return doc.getDocumentElement().getAttributes().getNamedItem( "type" ).getNodeValue();
+        return doc.getDocumentElement().getAttributes().getNamedItem( "key" ).getNodeValue();
     }
 
     /**

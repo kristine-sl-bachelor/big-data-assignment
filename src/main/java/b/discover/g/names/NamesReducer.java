@@ -59,10 +59,13 @@ public class NamesReducer extends Reducer< Text, IntWritable, Text, Text > {
         for ( int i = 1; i <= Names.NUMBER_OF_AUTHORS; i++ ) {
 
             String firstTemp = MapSorter.getHighestValue( firstNames );
+            String lastTemp = MapSorter.getHighestValue( lastNames );
+
+            if ( firstTemp.equals( "" ) || lastTemp.equals( "" ) ) break;
+
             firstNames.remove( firstTemp );
             first += String.format( StringFormat.POPULARITY, i, firstTemp );
 
-            String lastTemp = MapSorter.getHighestValue( lastNames );
             lastNames.remove( lastTemp );
             last += String.format( StringFormat.POPULARITY, i, lastTemp );
 

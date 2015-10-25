@@ -19,7 +19,7 @@ public class TitleIndexMapper extends Mapper< LongWritable, Text, Text, Text > {
     protected void map( LongWritable key, Text value, Context context ) throws IOException, InterruptedException {
 
         XmlStringParser parser = new XmlStringParser( value.toString() );
-        Text attributeKey = new Text( parser.getRootAttributeType() );
+        Text attributeKey = new Text( parser.getRootAttributeKey() );
 
         List< String > titles = parser.getValuesFromTag( "title" );
 

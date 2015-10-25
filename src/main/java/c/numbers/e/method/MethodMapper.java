@@ -24,9 +24,11 @@ public class MethodMapper extends Mapper< LongWritable, Text, Text, IntWritable 
 
             while ( tokenizer.hasMoreTokens() ) {
 
-                if ( Word.cleanWord( tokenizer.nextToken().toLowerCase() ).equals( Method.WORD ) ) {
+                String word = Word.cleanWord( tokenizer.nextToken().toLowerCase() );
 
-                    context.write( new Text( Method.WORD ), new IntWritable( 1 ) );
+                if ( word.equals( Method.WORD ) ) {
+
+                    context.write( new Text( word ), new IntWritable( 1 ) );
                 }
             }
         }

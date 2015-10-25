@@ -1,5 +1,6 @@
 package a.warmup;
 
+import org.apache.pig.pigunit.PigTest;
 import org.apache.pig.tools.parameters.ParseException;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -8,16 +9,14 @@ import java.io.IOException;
 
 public class PigTopTenTest {
 
+    //TODO: Find way to test Pig script
     @Ignore
     @Test
     public void testScript() throws IOException, ParseException {
 
-        //TODO
+        String[] args = { "n=3", "input=popular_words.txt", "output=limited" };
 
-        /*
-        // String[] args = { "n=3", "input=popular_words.txt", "output=limited" };
-
-        PigTest test = new PigTest( "/Users/kristinesundtlorentzen/Dropbox/westerdals/master/big data/exercises/big data/src/main/pig/warmup/TopTen.pig", args );
+        PigTest test = new PigTest( "PIG_SCRIPT", args );
 
         String[] output = {
 
@@ -34,6 +33,5 @@ public class PigTopTenTest {
         };
 
         test.assertOutput( "limited", output );
-        */
     }
 }

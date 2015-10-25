@@ -1,16 +1,15 @@
 package b.discover.b.unique_authors;
 
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
 
-public class UniqueAuthorsReducer extends Reducer<Text, IntWritable, Text, NullWritable> {
+public class UniqueAuthorsReducer extends Reducer<Text, NullWritable, Text, NullWritable> {
 
     @Override
-    protected void reduce( Text key, Iterable< IntWritable > values, Context context ) throws IOException, InterruptedException {
+    protected void reduce( Text key, Iterable< NullWritable > values, Context context ) throws IOException, InterruptedException {
 
         context.write( key, NullWritable.get() );
     }

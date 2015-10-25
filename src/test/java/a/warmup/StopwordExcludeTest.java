@@ -49,7 +49,7 @@ public class StopwordExcludeTest {
                 .runTest();
     }
 
-    // Won't work properly, don't know why yet, but I'm working on it TODO
+    // TODO: Find way to test MultipleOutputs
     @Ignore
     @Test
     public void testReducer() throws IOException {

@@ -42,6 +42,9 @@ public class TrigramReducer extends Reducer< Text, IntWritable, Text, IntWritabl
         for ( int i = 1; i <= Trigram.OUTPUTS; i++ ) {
 
             String trigram = MapSorter.getHighestValue( trigrams );
+
+            if ( trigram.equals( "" ) ) break;
+
             context.write( new Text( String.format( StringFormat.POPULARITY, i, trigram ) ), new IntWritable( trigrams.get( trigram ) ) );
 
             trigrams.remove( trigram );

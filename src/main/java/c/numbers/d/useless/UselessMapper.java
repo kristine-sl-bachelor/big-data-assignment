@@ -24,9 +24,11 @@ public class UselessMapper extends Mapper< LongWritable, Text, Text, IntWritable
 
             while ( tokenizer.hasMoreTokens() ) {
 
-                if ( Word.cleanWord( tokenizer.nextToken().toLowerCase() ).equals( "useless" ) ) {
+                String word = Word.cleanWord( tokenizer.nextToken().toLowerCase() );
 
-                    context.write( new Text( titles.get( 0 ) ), new IntWritable( 1 ) );
+                if ( word.equals( Useless.WORD ) ) {
+
+                    context.write( new Text( word ), new IntWritable( 1 ) );
                 }
             }
         }

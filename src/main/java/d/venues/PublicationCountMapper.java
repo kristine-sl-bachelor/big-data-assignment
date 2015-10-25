@@ -27,11 +27,11 @@ public class PublicationCountMapper extends Mapper< LongWritable, Text, Text, In
 
         for ( int i = 0; i < nodes.getLength(); i++ ) {
 
-            String nodeValue = nodes.item( i ).getNodeValue().trim();
+            String nodeValue = nodes.item( i ).getTextContent();
 
             if ( Word.startsWithLetter( nodeValue ) ) {
 
-                context.write( new Text( nodeValue ), new IntWritable( year ));
+                context.write( new Text( nodeValue ), new IntWritable( year ) );
             }
         }
     }

@@ -2,7 +2,6 @@ package b.discover;
 
 import b.discover.b.unique_authors.UniqueAuthorsMapper;
 import b.discover.b.unique_authors.UniqueAuthorsReducer;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
@@ -17,8 +16,8 @@ import java.util.List;
 
 public class UniqueAuthorsTest {
 
-    MapDriver< LongWritable, Text, Text, IntWritable > mapDriver;
-    ReduceDriver< Text, IntWritable, Text, NullWritable > reduceDriver;
+    MapDriver< LongWritable, Text, Text, NullWritable > mapDriver;
+    ReduceDriver< Text, NullWritable, Text, NullWritable > reduceDriver;
 
     private final String AUTHOR_1 = "Author1", AUTHOR_2 = "Author2";
 
@@ -42,16 +41,16 @@ public class UniqueAuthorsTest {
                 + "</article>";
 
         mapDriver.withInput( new LongWritable(), new Text( input ) )
-                .withOutput( new Text( AUTHOR_1 ), new IntWritable( 1 ) )
-                .withOutput( new Text( AUTHOR_2 ), new IntWritable( 1 ) )
+                .withOutput( new Text( AUTHOR_1 ), NullWritable.get() )
+                .withOutput( new Text( AUTHOR_2 ), NullWritable.get() )
                 .runTest();
     }
 
     @Test
     public void testReducer() throws IOException {
 
-        List<IntWritable> inputValues = new ArrayList< IntWritable >();
-        inputValues.add( new IntWritable( 1 ) );
+        List< NullWritable > inputValues = new ArrayList< NullWritable >();
+        inputValues.add( NullWritable.get() );
 
         reduceDriver.withInput( new Text( AUTHOR_1 ), inputValues )
                 .withInput( new Text( AUTHOR_2 ), inputValues )

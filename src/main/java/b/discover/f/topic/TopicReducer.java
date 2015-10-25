@@ -40,7 +40,7 @@ public class TopicReducer extends Reducer< Text, IntWritable, Text, IntWritable 
 
             for ( String excludedWord : excludedWords ) {
 
-                if ( !word.toLowerCase().equals( excludedWord.toLowerCase() ) ) excluded = true;
+                if ( word.toLowerCase().equals( excludedWord.toLowerCase() ) ) excluded = true;
             }
 
             if ( !excluded ) {
@@ -48,6 +48,7 @@ public class TopicReducer extends Reducer< Text, IntWritable, Text, IntWritable 
                 if ( words.containsKey( word ) ) words.put( word, words.get( word ) + value.get() );
 
                 else words.put( word, value.get() );
+
             }
         }
     }
@@ -58,6 +59,8 @@ public class TopicReducer extends Reducer< Text, IntWritable, Text, IntWritable 
         for ( int i = 0; i < Topic.NUMBER_OF_TOPICS; i++ ) {
 
             String word = MapSorter.getHighestValue( words );
+
+            if ( word.equals( "" ) ) break;
 
             context.write( new Text( word ), new IntWritable( words.get( word ) ) );
 

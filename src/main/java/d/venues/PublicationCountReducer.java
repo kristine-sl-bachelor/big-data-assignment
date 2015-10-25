@@ -1,6 +1,7 @@
 package d.venues;
 
 import _other.helpers.MapSorter;
+import _other.helpers.StringFormat;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -29,25 +30,31 @@ public class PublicationCountReducer extends Reducer< Text, IntWritable, Text, I
     protected void reduce( Text key, Iterable< IntWritable > values, Context context ) throws IOException, InterruptedException {
 
         List< Integer > years = new ArrayList< Integer >();
+        int sum = 0;
 
         for ( IntWritable value : values ) {
 
             int year = value.get();
 
             if ( !years.contains( year ) ) years.add( year );
+
+            sum++;
         }
 
-        venues.put( key.toString(), years.size() );
+        // If it is recurrent
+        if ( years.size() > 1 ) venues.put( key.toString(), sum );
     }
 
     @Override
     protected void cleanup( Context context ) throws IOException, InterruptedException {
 
-        for ( int i = 0; i < PublicationCount.OUTPUTS; i++ ) {
+        for ( int i = 1; i <= PublicationCount.OUTPUTS; i++ ) {
 
             String venue = MapSorter.getHighestValue( venues );
 
-            context.write( new Text( venue ), new IntWritable( venues.get( venue ) ) );
+            if ( venue.equals( "" ) ) break;
+
+            context.write( new Text( String.format( StringFormat.POPULARITY, i, venue ) ), new IntWritable( venues.get( venue ) ) );
 
             venues.remove( venue );
         }
